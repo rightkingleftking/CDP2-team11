@@ -116,7 +116,6 @@ def test_view(request):
         
     
     # 삭제작업 
-    '''
     if os.path.exists("result.mp4") : os.remove("result.mp4")
     os.rename(BASE_INPUT_FILE_NAME, "result.mp4")
     os.remove("OUTPUT_FILE.mp4")
@@ -135,7 +134,6 @@ def test_view(request):
             except :
                 pass
 
-    '''
     output = open('result.mp4', 'rb')
     response = FileResponse(output)
     return response
