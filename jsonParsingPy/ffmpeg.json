@@ -7,8 +7,8 @@
 		},
 		{
 			"videoFile": "videoB.mp4",
-			"videoPlayStartPosition": 0,
-			"videoPlayDuration": 10000
+			"videoPlayStartPosition": 3000,
+			"videoPlayDuration": 5000
 		}
 	],
 	"soundList": [
