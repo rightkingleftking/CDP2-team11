@@ -1,27 +1,22 @@
-FROM ubuntu:20.04
-RUN apt-get update
-RUN apt-get -y install python3
-RUN apt-get -y install python3-pip
-RUN pip3 install django
+# aitube/Dockerfile
 
-RUN mkdir /var/run/sshd
-RUN echo 'root:0000' | chpasswd
-RUN sed -i 's/#*PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
-RUN sed -i 's@session\s*required\s*pam_loginid.so@session optimal pam_loginuid.so@' /etc/pam.d/sshd
+# python:3-slim 이미지 사용
+FROM        python:3-slim
 
-ENV NOTVISIBLE="in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
+# 배포 서버 업데이트
+RUN         apt -y -qq update & apt -y -qq dist-upgrade && apt -y -qq autoremove
+# pip 업그레이드
+RUN         pip install --upgrade pip
 
-EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+# /tmp 폴더에 requirements.txt 파일 복사
+COPY        ./requirements.txt /tmp
+# requirements.txt에 있는 라이브러리 설치
+RUN         pip install -r /tmp/requirements.txt
 
-ARG SSH_PRIVATE_KEY
-RUN mkdir /root/.ssh/
-RUN echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+# 현재 프로젝트를 /srv/aitube 폴더에 복사
+COPY        . /srv/aitube
+# Docker 이미지 실행시 경로
+WORKDIR     /srv/aitube
 
-RUN touch ~/.ssh/known_hosts
-RUN ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-
-WORKDIR /root
-
-RUN git clone git@github.com:rightkingleftking/CDP2-team11.git
+# Docker 컨테이너 생성시 default로 실행하는 명령어
+CMD         /bin/bash
