@@ -55,17 +55,8 @@ def getFontColor(Value):
 
 
 def getFontFamily(Value):
-    FONTLIST = {
-        "야놀자 야체 Bold.ttf": "font/yanolzaBold.ttf",
-        "야놀자 야체 Regular.ttf": "font/yanolzaRegular.ttf",
-        "BASE_FONT": "/Windows/fonts/malgun.ttf"
-    }
-    if Value in FONTLIST:
-        return f":fontfile={FONTLIST[Value]}"
-
-    else:
-        return f":fontfile={FONTLIST['BASE_FONT']}"
-
+    Value = ":fontfile=font/" + Value
+    return Value
 
 def getCaption(headers, VIDEO_CAPTION):
     if "text" in VIDEO_CAPTION:
